@@ -1,5 +1,5 @@
 const accessToken = document.querySelector('#accessToken');
-const aclForm = document.querySelector('#aclForm');
+const loginForm = document.querySelector('#loginForm');
 const errorDiv = document.querySelector('#error');
 const loadingDiv = document.querySelector('#loading');
 const serverUrl = document.querySelector('#serverUrl');
@@ -71,7 +71,7 @@ function createRow(room) {
     table.appendChild(row);
 }
 
-aclForm.addEventListener('submit', async (e) => {
+loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     loadingDiv.hidden = false;
