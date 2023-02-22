@@ -55,10 +55,13 @@
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col">
+                    <div class="col-2">
                         <button type="submit" class="btn btn-success">Fetch rooms</button>
                     </div>
-                    <div class="col" id="loading" hidden>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-success" id="dwn-btn" disabled>Download CSV</button>
+                    </div>
+                    <div class="col-2" id="loading" hidden>
                         <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
                     </div>
                 </div>
@@ -76,9 +79,9 @@
                                 <th scope="col">Room ID</th>
                                 <th scope="col">Room Name</th>
                                 <th scope="col">Creator</th>
-                                <th scope="col">Canonical alias</th>
+                                <th scope="col">Canonical Alias</th>
                                 <th scope="col">Public</th>
-                                <th scope="col">Member count</th>
+                                <th scope="col">Member Count</th>
                             </tr>
                         </thead>
                         <tbody id="rooms" class="list">
