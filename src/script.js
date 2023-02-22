@@ -1,13 +1,43 @@
 const accessToken = document.querySelector('#accessToken');
-const loginForm = document.querySelector('#loginForm');
+const dwnBtn = document.querySelector('#dwn-btn');
 const errorDiv = document.querySelector('#error');
 const loadingDiv = document.querySelector('#loading');
+const loginForm = document.querySelector('#loginForm');
 const serverUrl = document.querySelector('#serverUrl');
 const table = document.querySelector('#rooms');
 
+let csvContent;
+
 window.onload = function () {
     document.querySelector('#current-url').textContent = window.location.host;
+    csvContent = '';
+    dwnBtn.disabled = true;
 };
+
+function downloadAsTextFile(filename, text) {
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+// Start file download.
+dwnBtn.addEventListener(
+    'click',
+    function () {
+        const text = csvContent;
+        const filename = 'rooms.csv';
+
+        downloadAsTextFile(filename, text);
+    },
+    false,
+);
 
 async function getRooms() {
     const headers = { Authorization: `Bearer ${accessToken.value}` };
@@ -34,7 +64,6 @@ async function getRooms() {
 }
 
 function createRow(room) {
-    console.log(room);
     const row = document.createElement('tr');
     row.innerHTML = `
         <td className="roomId">
@@ -75,15 +104,24 @@ loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     loadingDiv.hidden = false;
+    dwnBtn.disabled = true;
     error.textContent = '';
 
     const rooms = await getRooms();
 
+    csvContent += 'roomID;roomName;creator;canonicalAlias;public;memberCount\n';
+
     if (!rooms.error) {
         rooms.forEach((room) => {
-            if (room.joined_members > 2) createRow(room);
+            if (room.joined_members > 2) {
+                createRow(room);
+                csvContent += `${room.room_id};${room.name?.replace(';', ':')};${room.creator};${
+                    room.canonical_alias
+                };${room.public};${room.joined_members}\n`;
+            }
         });
     }
 
+    dwnBtn.disabled = false;
     loadingDiv.hidden = true;
 });
