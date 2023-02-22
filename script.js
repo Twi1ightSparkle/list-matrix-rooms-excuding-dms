@@ -109,7 +109,7 @@ loginForm.addEventListener('submit', async (e) => {
 
     const rooms = await getRooms();
 
-    csvContent += 'roomID;roomName;creator;canonicalAlias;public;memberCount\n';
+    csvContent = 'roomID;roomName;creator;canonicalAlias;public;memberCount\n';
 
     if (!rooms.error) {
         rooms.forEach((room) => {
