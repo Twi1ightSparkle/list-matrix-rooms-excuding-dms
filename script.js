@@ -109,15 +109,19 @@ loginForm.addEventListener('submit', async (e) => {
 
     const rooms = await getRooms();
 
-    csvContent = 'roomID;roomName;creator;canonicalAlias;public;memberCount\n';
+    csvContent =
+        'room_id;name;canonical_alias;joined_members;joined_local_members;version;creator;encryption;federatable;' +
+        'public;join_rules;guest_access;history_visibility;state_events;room_type\n';
 
     if (!rooms.error) {
         rooms.forEach((room) => {
             if (room.joined_members > 2) {
                 createRow(room);
-                csvContent += `${room.room_id};${room.name?.replace(';', ':')};${room.creator};${
-                    room.canonical_alias
-                };${room.public};${room.joined_members}\n`;
+                csvContent +=
+                    `${room.room_id};${room.name?.replace(';', ':')};${room.canonical_alias};` +
+                    `${room.joined_members};${room.joined_local_members};${room.version};${room.creator};` +
+                    `${room.encryption};${room.federatable};${room.public};${room.join_rules};${room.guest_access};` +
+                    `${room.history_visibility};${room.state_events};${room.room_type}\n`;
             }
         });
     }
